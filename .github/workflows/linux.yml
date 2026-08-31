@@ -6,6 +6,7 @@ on:
       - main
       - maintenance/**
       - ppc64le-test
+      - feature/scipy        
   pull_request:
     branches:
       - main
