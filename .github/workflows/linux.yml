@@ -6,6 +6,7 @@ on:
       - main
       - maintenance/**
       - ppc64le-test
+      - feature/scipy        
   pull_request:
     branches:
       - main
@@ -727,7 +728,7 @@ jobs:
 
       - name: Setup build and install scipy
         run: |
-          spin build --release --setup-args=-Dblas=openblas --setup-args=-Dlapack=openblas --setup-args=-Duse-g77-abi=true
+          spin build --release --setup-args=-Dblas=openblas --setup-args=-Dlapack=openblas 
 
       - name: Ccache performance
         shell: bash -l {0}
@@ -738,8 +739,23 @@ jobs:
       # - name: Verify scipy is linked against devpi OpenBLAS
       #   run: |
       #     cd /tmp && python -c "import scipy; scipy.show_config()"
-
+      - name: Verify OpenBLAS linkage
+        run: |
+          python -c "import scipy; scipy.show_config()"
+      
+      - name: LAPACK diagnostics
+        run: |
+          python - <<'PY'
+          import numpy as np
+          import scipy
+          import scipy.linalg
+          print("NumPy:", np.__version__)
+          print("SciPy:", scipy.__version__)
+          scipy.show_config()
+          PY
+          s
       - name: Test SciPy
         run: |
-          export OMP_NUM_THREADS=2
-          spin test -j3 -- --durations 10 --timeout=60
+          export OMP_NUM_THREADS=1
+          export OPENBLAS_NUM_THREADS=1
+          spin test -j1 -- --durations 10 --timeout=60
