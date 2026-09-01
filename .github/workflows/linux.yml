@@ -756,9 +756,11 @@ jobs:
       - name: Install Python packages
         run: |
           python -m pip install --upgrade pip
-          python -m pip install --group build --group dev-cli --group test-core --group test-mp --extra-index-url https://wheels.developerfirst.ibm.com/ppc64le/linux --prefer-binary
+          python -m pip install --no-cache-dir --group build --group dev-cli --group test-core --group test-mp --extra-index-url https://wheels.developerfirst.ibm.com/ppc64le/linux --prefer-binary
 
       - name: Test SciPy
         run: |
-          export OMP_NUM_THREADS=$(nproc --all)
-          spin test -j$(nproc --all) -- --durations 10
+          lscpu
+          free -g
+          export OMP_NUM_THREADS=8
+          spin test -j8 -- --durations 10
