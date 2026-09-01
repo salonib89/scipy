@@ -763,23 +763,12 @@ jobs:
       
       - name: Runtime diagnostics
         run: |
-         spin python -- - <<'PY'
-         import scipy
-         import scipy.linalg
-
-         print("SciPy:", scipy.__version__)
-         print("SciPy file:", scipy.__file__)
-         print("fblas:", scipy.linalg._fblas.__file__)
-         PY
+         spin python -- -c "import scipy, scipy.linalg; print('SciPy:', scipy.__version__);
+         print('SciPy file:', scipy.__file__); print('fblas:', scipy.linalg._fblas.__file__)"
 
       - name: BLAS diagnostics
         run: |
-         spin python -- - <<'PY'
-         import numpy as np
-
-          print("NumPy:", np.__version__)
-          np.show_config()
-          PY
+         spin python -- -c "import numpy as np; print('NumPy:', np.__version__); np.show_config()"
 
 
       - name: Test SciPy
