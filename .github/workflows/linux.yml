@@ -686,8 +686,9 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y libatlas-base-dev \
-            libgmp-dev libmpfr-dev libsuitesparse-dev libmpc-dev ccache
-      
+            libgmp-dev libmpfr-dev libsuitesparse-dev libmpc-dev ccache \
+            libopenblas-dev
+
       # - name: Install OpenBLAS from devpi
       #   run: python -m pip install "openblas==0.3.29+ppc64le1" --extra-index-url https://wheels.developerfirst.ibm.com/ppc64le/linux --prefer-binary
       
