@@ -742,7 +742,7 @@ jobs:
       - name: Verify OpenBLAS linkage
         run: |
           cd ..
-          python -c "import scipy; scipy.show_config()"
+          python -c "import numpy; numpy.show_config()"
       
       - name: LAPACK diagnostics
         run: |
