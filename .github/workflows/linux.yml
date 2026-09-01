@@ -741,6 +741,7 @@ jobs:
       #     cd /tmp && python -c "import scipy; scipy.show_config()"
       - name: Verify OpenBLAS linkage
         run: |
+          cd ..
           python -c "import scipy; scipy.show_config()"
       
       - name: LAPACK diagnostics
