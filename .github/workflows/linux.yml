@@ -776,6 +776,4 @@ jobs:
           export OMP_NUM_THREADS=1
           export OPENBLAS_NUM_THREADS=1
           export PYTHONFAULTHANDLER=1
-          spin python -- -m pytest \
-            scipy/linalg/tests/test_basic.py::TestMatrix_Balance::test_scaling \
-            -vv -s
+          spin test -- -k test_scaling -vv -s
