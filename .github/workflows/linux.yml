@@ -727,3 +727,38 @@ jobs:
       - name: Test SciPy
         run: |
           pixi run test-fail-slow
+
+  #################################################################################
+  test_ppc64le:
+    name: ppc64le, fast, py3.12, spin
+    needs: get_commit_message
+    if: >
+      needs.get_commit_message.outputs.message == 1
+      && (github.repository == 'scipy/scipy' || github.repository == 'salonib89/scipy' || github.repository == '')
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          submodules: recursive
+          persist-credentials: false
+
+      - name: Install Ubuntu dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y 
+            libgmp-dev \
+            libmpfr-dev \
+            libopenblas-dev \
+            libatlas-base-dev \
+            libmpc-dev ccache \
+            libsuitesparse-dev
+      
+      - name: Install Python packages
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install --group build --group dev-cli --group test-core --group test-mp --extra-index-url https://wheels.developerfirst.ibm.com/ppc64le/linux --prefer-binary
+
+      - name: Test SciPy
+        run: |
+          export OMP_NUM_THREADS=$(nproc --all)
+          spin test -j$(nproc --all) -- --durations 10
