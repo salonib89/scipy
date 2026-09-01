@@ -728,8 +728,7 @@ jobs:
 
       - name: Setup build and install scipy
         run: |
-          spin build --release --setup-args=-Dblas=openblas --setup-args=-Dlapack=openblas --setup-args=-Duse-g77-abi=true
-
+          spin build --release 
       - name: Ccache performance
         shell: bash -l {0}
         run: |
