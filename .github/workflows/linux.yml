@@ -688,26 +688,26 @@ jobs:
           sudo apt-get install -y libatlas-base-dev \
             libgmp-dev libmpfr-dev libsuitesparse-dev libmpc-dev ccache
       
-      - name: Install OpenBLAS from devpi
-        run: python -m pip install "openblas==0.3.29+ppc64le1" --extra-index-url https://wheels.developerfirst.ibm.com/ppc64le/linux --prefer-binary
+      # - name: Install OpenBLAS from devpi
+      #   run: python -m pip install "openblas==0.3.29+ppc64le1" --extra-index-url https://wheels.developerfirst.ibm.com/ppc64le/linux --prefer-binary
       
-      - name: Point linker at wheel-provided OpenBLAS
-        run: |
-          BASE=$(python -c "import openblas; print(list(openblas.__path__)[0])")
-          LIB=${BASE}/lib
-          INC=${BASE}/include
-          PC=${BASE}/lib/pkgconfig
+      # - name: Point linker at wheel-provided OpenBLAS
+        # run: |
+        #   BASE=$(python -c "import openblas; print(list(openblas.__path__)[0])")
+        #   LIB=${BASE}/lib
+        #   INC=${BASE}/include
+        #   PC=${BASE}/lib/pkgconfig
 
-          # Persist to GITHUB_ENV for all subsequent CI steps
-          echo "LD_LIBRARY_PATH=${LIB}:${LD_LIBRARY_PATH}" >> $GITHUB_ENV
-          echo "LIBRARY_PATH=${LIB}:${LIBRARY_PATH}"       >> $GITHUB_ENV
-          echo "PKG_CONFIG_PATH=${PC}:${PKG_CONFIG_PATH}"  >> $GITHUB_ENV
-          echo "CPATH=${INC}:${CPATH}"                     >> $GITHUB_ENV
+        #   # Persist to GITHUB_ENV for all subsequent CI steps
+        #   echo "LD_LIBRARY_PATH=${LIB}:${LD_LIBRARY_PATH}" >> $GITHUB_ENV
+        #   echo "LIBRARY_PATH=${LIB}:${LIBRARY_PATH}"       >> $GITHUB_ENV
+        #   echo "PKG_CONFIG_PATH=${PC}:${PKG_CONFIG_PATH}"  >> $GITHUB_ENV
+        #   echo "CPATH=${INC}:${CPATH}"                     >> $GITHUB_ENV
 
-          # Also register with ldconfig so the .so is found by any process
-          # on this runner without needing LD_LIBRARY_PATH at all
-          echo "${LIB}" | sudo tee /etc/ld.so.conf.d/openblas-devpi.conf
-          sudo ldconfig
+        #   # Also register with ldconfig so the .so is found by any process
+        #   # on this runner without needing LD_LIBRARY_PATH at all
+        #   echo "${LIB}" | sudo tee /etc/ld.so.conf.d/openblas-devpi.conf
+        #   sudo ldconfig
 
       - name: Install Python packages # trying with devpi index -> failing 4 test cases
         run: |
@@ -761,18 +761,18 @@ jobs:
             # print("LAPACK check failed:", e)
             # PY
       
-      - name: Runtime diagnostics
-        run: |
-         spin python -- -c "import scipy, scipy.linalg; print('SciPy:', scipy.__version__);
-         print('SciPy file:', scipy.__file__); print('fblas:', scipy.linalg._fblas.__file__)"
+      # - name: Runtime diagnostics
+      #   run: |
+      #    spin python -- -c "import scipy, scipy.linalg; print('SciPy:', scipy.__version__);
+      #    print('SciPy file:', scipy.__file__); print('fblas:', scipy.linalg._fblas.__file__)"
 
-      - name: BLAS diagnostics
-        run: |
-         spin python -- -c "import numpy as np; print('NumPy:', np.__version__); np.show_config()"
+      # - name: BLAS diagnostics
+      #   run: |
+      #    spin python -- -c "import numpy as np; print('NumPy:', np.__version__); np.show_config()"
 
 
       - name: Test SciPy
         run: |
-         export OMP_NUM_THREADS=1
-         export OPENBLAS_NUM_THREADS=1
+         export OMP_NUM_THREADS=16
+         export OPENBLAS_NUM_THREADS=16
          spin test -j16 -- --durations 10 --timeout=60
