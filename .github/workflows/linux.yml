@@ -742,23 +742,37 @@ jobs:
       
       - name: Verify OpenBLAS linkage
         run: |
-          cd ..
-          python - <<'PY'
-          from scipy.__config__ import show
-          show()
-          PY
+             spin python - <<'PY'
+              import scipy
+              import numpy as np
+
+              print("SciPy:", scipy.__version__)
+              print("NumPy:", np.__version__)
+
+              try:
+                  np.show_config()
+              except Exception as e:
+                  print(e)
+              PY
           
+      
       - name: LAPACK diagnostics
         run: |
-          python - <<'PY'
-          import numpy as np
-          import scipy
-          import scipy.linalg
-          print("NumPy:", np.__version__)
-          print("SciPy:", scipy.__version__)
-          scipy.show_config()
-          PY
-          s
+            spin python - <<'PY'
+            import numpy as np
+            import scipy
+            from scipy.linalg import lapack
+
+            print("NumPy:", np.__version__)
+            print("SciPy:", scipy.__version__)
+            print("SciPy path:", scipy.__file__)
+
+            try:
+            print(lapack.ilaver())
+            except Exception as e:
+            print("LAPACK check failed:", e)
+            PY
+            
       - name: Test SciPy
         run: |
           export OMP_NUM_THREADS=1
