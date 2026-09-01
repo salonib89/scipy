@@ -740,10 +740,9 @@ jobs:
       #   run: |
       #     cd /tmp && python -c "import scipy; scipy.show_config()"
       
-      - name: Verify OpenBLAS linkage
+      - name: Verify SciPy import
         run: |
-          spin python -c "import scipy; print('SciPy version:', scipy.__version__);
-          print('SciPy location:', scipy.__file__)"
+         spin python -- -c "import scipy; print('SciPy version:', scipy.__version__); print('SciPy location:', scipy.__file__)"
 
       # - name: LAPACK diagnostics
       #   run: |
