@@ -739,11 +739,15 @@ jobs:
       # - name: Verify scipy is linked against devpi OpenBLAS
       #   run: |
       #     cd /tmp && python -c "import scipy; scipy.show_config()"
+      
       - name: Verify OpenBLAS linkage
         run: |
           cd ..
-          python -c "import scipy; scipy.show_config()"
-      
+          python - <<'PY'
+          from scipy.__config__ import show
+          show()
+          PY
+          
       - name: LAPACK diagnostics
         run: |
           python - <<'PY'
