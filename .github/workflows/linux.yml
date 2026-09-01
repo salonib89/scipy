@@ -689,7 +689,7 @@ jobs:
             libgmp-dev libmpfr-dev libsuitesparse-dev libmpc-dev ccache
       
       - name: Install OpenBLAS from devpi
-        run: python -m pip install "openblas==0.3.32+ppc64le1" --extra-index-url https://wheels.developerfirst.ibm.com/ppc64le/linux --prefer-binary
+        run: python -m pip install "openblas==0.3.29+ppc64le1" --extra-index-url https://wheels.developerfirst.ibm.com/ppc64le/linux --prefer-binary
       
       - name: Point linker at wheel-provided OpenBLAS
         run: |
@@ -773,7 +773,6 @@ jobs:
 
       - name: Test SciPy
         run: |
-          export OMP_NUM_THREADS=1
-          export OPENBLAS_NUM_THREADS=1
-          export PYTHONFAULTHANDLER=1
-          spin test -- -k test_scaling -vv -s
+         export OMP_NUM_THREADS=1
+         export OPENBLAS_NUM_THREADS=1
+         spin test -j16 -- --durations 10 --timeout=60
