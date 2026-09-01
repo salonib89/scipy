@@ -777,4 +777,4 @@ jobs:
           export OMP_NUM_THREADS=1
           export OPENBLAS_NUM_THREADS=1
           export PYTHONFAULTHANDLER=1
-          spin test -j1 -vv -x -- --durations=10 --timeout=60
+          spin test -j1 -- -vv -x -- --durations=10 --timeout=60
