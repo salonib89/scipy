@@ -703,6 +703,13 @@ jobs:
           spin build --release \
             --setup-args=-Dblas=openblas \
             --setup-args=-Dlapack=openblas
+        
+      - name: Verify BLAS/LAPACK
+        run: |
+          spin python - <<'PY'
+          import scipys
+          scipy.show_config()
+          PY
 
       - name: Verify SciPy Build
         run: |
