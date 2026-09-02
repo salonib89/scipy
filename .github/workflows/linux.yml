@@ -670,7 +670,7 @@ jobs:
   #         export OMP_NUM_THREADS=2
   #         spin test --no-build -m 'not slow' -- --durations=0 --durations-min=0.5 --fail-slow=1.0
     #################################################################################
-   test_ppc64le:
+  test_ppc64le:
     name: ppc64le, fast, py3.12, spin
     needs: get_commit_message
     if: >
