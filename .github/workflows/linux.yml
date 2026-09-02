@@ -707,7 +707,7 @@ jobs:
       - name: Verify BLAS/LAPACK
         run: |
           spin python - <<'PY'
-          import scipys
+          import scipy
           scipy.show_config()
           PY
 
